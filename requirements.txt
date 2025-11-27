@@ -1,19 +1,18 @@
-# --- Core Web API ---
-fastapi>=0.111.0
-uvicorn[standard]>=0.30.0
+# --- Core MongoDB / Atlas ---
+pymongo[srv]>=4.8.0
+motor>=3.5.0
 
-# --- MongoDB + Atlas Vector Search ---
-pymongo[srv]>=4.8.0      # core MongoDB driver
-motor>=3.5.0             # async MongoDB (optional but nice with FastAPI)
-
-# --- Agentic / LLM Layer ---
+# --- Agent Orchestration / LLM Layer ---
 langgraph>=0.2.0
 langchain>=0.2.0
-langchain-openai>=0.1.0  # if you're using LangChain wrappers
-openai>=1.35.0           # direct OpenAI client for LLMs / embeddings
+langchain-openai>=0.1.0
+openai>=1.35.0
 
 # --- Config / Validation / Utilities ---
-python-dotenv>=1.0.1     # load env vars for secrets, Mongo URI, etc.
+python-dotenv>=1.0.1
 pydantic>=2.7.0
-tenacity>=8.3.0          # retries around flaky external calls
+tenacity>=8.3.0
 requests>=2.32.0
+
+# --- Optional: CLI Runner for Agents / Pipelines ---
+typer>=0.12.0
