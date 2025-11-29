@@ -151,4 +151,88 @@ async def run_flow(
 
     # Apply workflow transitions if provided
     if "next_state" in final_state and rfp_id:
-        apply_workflow_transition(rfp_id, final_state.get("
+        apply_workflow_transition(rfp_id, final_state.get("next_state"))
+
+    return final_state
+
+
+# -------- Convenience Functions --------
+
+async def run_sales_only(
+    rfp_id: Optional[str] = None,
+    payload: Optional[Dict[str, Any]] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> BaseAgentResult:
+    """
+    Run only the Sales agent.
+    """
+    agent = SalesAgent()
+    agent_input = BaseAgentInput(
+        rfp_id=rfp_id,
+        payload=payload or {},
+        context=context or {}
+    )
+    return await agent.run(agent_input)
+
+
+async def run_bdm_only(
+    rfp_id: str,
+    payload: Optional[Dict[str, Any]] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> BaseAgentResult:
+    """
+    Run only the BDM Review agent.
+    """
+    agent = BDMReviewAgent()
+    agent_input = BaseAgentInput(
+        rfp_id=rfp_id,
+        payload=payload or {},
+        context=context or {}
+    )
+    return await agent.run(agent_input)
+
+
+async def run_sme_router_only(
+    payload: Dict[str, Any],
+    rfp_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> BaseAgentResult:
+    """
+    Run only the SME Router agent.
+    """
+    agent = SMERoutingAgent()
+    agent_input = BaseAgentInput(
+        rfp_id=rfp_id,
+        payload=payload,
+        context=context or {}
+    )
+    return await agent.run(agent_input)
+
+
+if __name__ == "__main__":
+    # Example usage for testing
+    import asyncio
+
+    async def main():
+        # Example: Create a new RFP and run the full flow
+        payload = {
+            "title": "Enterprise Software RFP",
+            "client_name": "Acme Corporation",
+            "client_contact": "jane.doe@acme.com",
+            "industry": "Technology",
+            "rfp_size": "Large"
+        }
+
+        print("Running full RFP workflow...")
+        result = await run_flow(payload=payload)
+        
+        print("Workflow completed!")
+        print(f"Final state: {result}")
+        
+        # Extract the RFP ID from the result
+        changes = result.get("agent_changes", [])
+        if changes and changes[0].get("rfp", {}).get("id"):
+            rfp_id = changes[0]["rfp"]["id"]
+            print(f"Created RFP with ID: {rfp_id}")
+
+    asyncio.run(main())
