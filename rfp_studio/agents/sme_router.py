@@ -5,7 +5,7 @@ SME Routing Agent for RFP Studio.
 
 Responsibilities:
 - Take questions / sections (usually from BDM-created tasks)
-- Embed them using OpenAI embeddings
+- Embed them using Voyage-3-Large embeddings
 - Use MongoDB Atlas Vector Search to find the best SME / team
 - Update tasks with assigned SME teams
 """
@@ -17,8 +17,6 @@ from typing import Any, Dict, List, Optional
 
 from bson import ObjectId
 
-from openai import OpenAI
-
 from rfp_studio.agents.base import (
     BaseAgent,
     BaseAgentConfig,
@@ -28,6 +26,7 @@ from rfp_studio.agents.base import (
 from rfp_studio.config import get_settings
 from rfp_studio.db.atlas import get_db
 from rfp_studio.models.task import TaskStatus
+from rfp_studio.vector.embeddings import embed_text
 
 
 class SMERoutingAgent(BaseAgent):
@@ -63,14 +62,11 @@ class SMERoutingAgent(BaseAgent):
             config
             or BaseAgentConfig(
                 name="SME Routing Agent",
-                description="Routes RFP questions to SME teams using Atlas Vector Search.",
+                description="Routes RFP questions to SME teams using Atlas Vector Search with Voyage-3-Large.",
                 agent_type="SME_ROUTING_AGENT",
             )
         )
         settings = get_settings()
-        if not settings.openai_api_key:
-            raise ValueError("OPENAI_API_KEY must be set for SMERoutingAgent.")
-        self._client = OpenAI(api_key=settings.openai_api_key)
         self._kb_index = settings.atlas_vector_index_kb
 
     async def run(self, agent_input: BaseAgentInput) -> BaseAgentResult:
@@ -233,12 +229,8 @@ class SMERoutingAgent(BaseAgent):
 
     def _embed_text(self, text: str) -> List[float]:
         """
-        Generate an embedding for the given text using OpenAI.
-
-        Uses 'text-embedding-3-small' by default for cost efficiency.
+        Generate an embedding for the given text using Voyage-3-Large.
+        
+        Returns 2048-dimensional embedding optimized for MongoDB Atlas.
         """
-        response = self._client.embeddings.create(
-            model="text-embedding-3-small",
-            input=text,
-        )
-        return response.data[0].embedding
+        return embed_text(text)

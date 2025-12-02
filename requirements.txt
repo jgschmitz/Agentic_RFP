@@ -5,8 +5,9 @@ motor>=3.5.0
 # --- Agent Orchestration / LLM Layer ---
 langgraph>=0.2.0
 langchain>=0.2.0
-langchain-openai>=0.1.0
-openai>=1.35.0
+# Note: Using Voyage-3-Large embeddings instead of OpenAI
+# langchain-openai>=0.1.0  # Commented out - not needed for Voyage
+# openai>=1.35.0           # Commented out - using Voyage instead
 
 # --- Config / Validation / Utilities ---
 python-dotenv>=1.0.1
