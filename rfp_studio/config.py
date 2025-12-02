@@ -28,7 +28,7 @@ class Settings(BaseModel):
 
     - MONGODB_URI
     - MONGODB_DB_NAME
-    - OPENAI_API_KEY
+    - VOYAGE_API_KEY (for Voyage-3-Large embeddings)
     - ATLAS_VECTOR_INDEX_RFPS
     - ATLAS_VECTOR_INDEX_KB
     - RFP_STUDIO_ENV
@@ -37,10 +37,13 @@ class Settings(BaseModel):
     mongodb_uri: str
     mongodb_db_name: str = "rfp_studio"
 
-    # LLM / embeddings (optional but recommended)
+    # Voyage AI embeddings (preferred for MongoDB)
+    voyage_api_key: Optional[str] = None
+    
+    # Legacy OpenAI support (deprecated - use Voyage instead)
     openai_api_key: Optional[str] = None
 
-    # Atlas Vector Search index names
+    # Atlas Vector Search index names (2048 dimensions for Voyage-3-Large)
     atlas_vector_index_rfps: str = "rfp_vector_index"
     atlas_vector_index_kb: str = "kb_vector_index"
 
@@ -64,6 +67,7 @@ class Settings(BaseModel):
         return cls(
             mongodb_uri=os.getenv("MONGODB_URI", ""),
             mongodb_db_name=os.getenv("MONGODB_DB_NAME", "rfp_studio"),
+            voyage_api_key=os.getenv("VOYAGE_API_KEY") or None,
             openai_api_key=os.getenv("OPENAI_API_KEY") or None,
             atlas_vector_index_rfps=os.getenv(
                 "ATLAS_VECTOR_INDEX_RFPS", "rfp_vector_index"
