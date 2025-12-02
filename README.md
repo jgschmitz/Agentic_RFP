@@ -4,6 +4,8 @@
 > **AI‑orchestrated RFP automation powered by Python, LangGraph, and MongoDB Atlas Vector Search.**  
 End‑to‑end automation: intake → BDM breakdown → SME routing → drafting → legal → quality → submission.
 
+> 🆕 **Now with Streamlit RAG Frontend** - Upload documents, extract questions, and generate answers using your knowledge base!
+
 ---
 
 ## 🚀 1. Overview
@@ -16,11 +18,47 @@ Core capabilities:
 - **Sales → BDM → SME → Writer → Legal → QA** agent network  
 - **Atlas Vector Search** for SME routing & answer reuse  
 - Clean, framework‑agnostic Python package (no FastAPI required)  
-- Modular agents you can run independently or as a flow  
+- Modular agents you can run independently or as a flow
+- **🆕 Streamlit RAG Frontend** for document processing and Q&A automation
 
 ---
 
-## 🏗️ 2. Project Structure
+## 🌐 2. Streamlit RAG Frontend
+
+**Perfect for customer demos and document processing workflows!**
+
+### ✨ Features
+- **📄 Document Upload**: Support for PDF, DOCX, and TXT files
+- **❓ Question Extraction**: Automatically detects questions in RFP documents using smart regex patterns
+- **🧠 RAG Pipeline**: Generates intelligent answers using your knowledge base and vector search
+- **💾 Knowledge Integration**: Saves Q&A pairs back to MongoDB Atlas for future reuse
+- **🔍 Real-time Search**: Search your knowledge base directly from the web interface
+
+### 🚀 Quick Start
+```bash
+# Launch the web frontend
+python rfp.py frontend
+
+# Or use the CLI
+rfp-studio frontend
+
+# Or run directly
+python run_streamlit.py
+```
+
+Visit **http://localhost:8501** to start processing documents!
+
+### 📊 Workflow
+1. **Upload** RFP documents (PDF/DOCX/TXT)
+2. **Extract** questions automatically 
+3. **Generate** answers using RAG and vector search
+4. **Review** and edit answers as needed
+5. **Save** Q&A pairs to knowledge base
+6. **Search** existing knowledge for future RFPs  
+
+---
+
+## 🏗️ 3. Project Structure
 
 ```
 rfp_studio/
@@ -56,7 +94,7 @@ rfp_studio/
 
 ---
 
-## 🗄️ 3. MongoDB Atlas Schema (High-Level)
+## 🗄️ 4. MongoDB Atlas Schema (High-Level)
 
 Each RFP is stored as a structured document:
 
@@ -82,7 +120,7 @@ Each RFP is stored as a structured document:
 
 ---
 
-## 🔁 4. Workflow State Machine
+## 🔁 5. Workflow State Machine
 
 ```
 INITIATED
@@ -102,7 +140,7 @@ INITIATED
 
 ---
 
-## 🤖 5. Agent Layer
+## 🤖 6. Agent Layer
 
 ### ✔️ Sales Agent (`agents/sales.py`)
 Creates or enriches an RFP record.
@@ -117,7 +155,7 @@ Uses embeddings + Atlas Vector Search to assign tasks to SME teams.
 
 ---
 
-## 🧠 6. Vector Intelligence
+## 🧠 7. Vector Intelligence
 
 Powered by **embeddings + Atlas Vector Search**:
 
@@ -133,7 +171,7 @@ Powered by **embeddings + Atlas Vector Search**:
 
 ---
 
-## 📚 7. Knowledge Base Loader
+## 📚 8. Knowledge Base Loader
 
 `knowledge/loader.py` ingests SME knowledge:
 
@@ -143,7 +181,7 @@ Powered by **embeddings + Atlas Vector Search**:
 
 ---
 
-## 🔀 8. Orchestrator (LangGraph)
+## 🔀 9. Orchestrator (LangGraph)
 
 `orchestrator/langgraph_flow.py` combines agents into a pipeline:
 
@@ -163,7 +201,7 @@ and returns:
 
 ---
 
-## 🧪 9. Running a Workflow
+## 🧪 10. Running a Workflow
 
 Example:
 
