@@ -209,6 +209,45 @@ def config():
 
 
 @app.command()
+def frontend():
+    """Launch the Streamlit web frontend for document upload and Q&A."""
+    
+    import subprocess
+    import sys
+    from pathlib import Path
+    
+    console.print("🚀 Starting RFP Studio Web Frontend...")
+    
+    # Get the streamlit app path
+    script_dir = Path(__file__).parent
+    streamlit_app_path = script_dir / "streamlit_app.py"
+    
+    if not streamlit_app_path.exists():
+        console.print("❌ Streamlit app not found!")
+        sys.exit(1)
+    
+    console.print("🌐 Opening web interface at http://localhost:8501")
+    console.print("📄 Upload RFP documents and extract Q&A automatically")
+    console.print("🔍 Use vector search to generate intelligent answers")
+    console.print("💾 Save results to knowledge base for future use")
+    console.print("\nPress Ctrl+C to stop the server")
+    
+    try:
+        # Launch streamlit
+        subprocess.run([
+            sys.executable, "-m", "streamlit", "run", str(streamlit_app_path),
+            "--server.address", "localhost",
+            "--server.port", "8501",
+            "--browser.gatherUsageStats", "false"
+        ], check=True)
+    except KeyboardInterrupt:
+        console.print("\n👋 Frontend stopped!")
+    except subprocess.CalledProcessError as e:
+        console.print(f"❌ Error launching frontend: {e}")
+        sys.exit(1)
+
+
+@app.command()
 def example():
     """Run a complete example workflow."""
     
