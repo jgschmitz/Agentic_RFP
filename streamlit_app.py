@@ -11,17 +11,33 @@ import streamlit as st
 import asyncio
 import tempfile
 import os
+import sys
 from typing import List, Dict, Any, Optional
 from pathlib import Path
 
+# Add current directory to Python path for local imports
+current_dir = Path(__file__).parent
+if str(current_dir) not in sys.path:
+    sys.path.insert(0, str(current_dir))
+
 # RFP Studio imports
-from rfp_studio.config import get_settings
-from rfp_studio.knowledge import load_knowledge_items, KnowledgeItem
-from rfp_studio.vector import search_knowledge_base, embed_text
-from rfp_studio.db import get_db
+try:
+    from rfp_studio.config import get_settings
+    from rfp_studio.knowledge import load_knowledge_items, KnowledgeItem
+    from rfp_studio.vector import search_knowledge_base, embed_text
+    from rfp_studio.db import get_db
+except ImportError as e:
+    st.error(f"❌ Import error: {e}")
+    st.error("Please make sure you're running this from the RFP Studio directory")
+    st.stop()
 
 # Document processing
-from document_processor import DocumentProcessor, QuestionExtractor, AnswerGenerator
+try:
+    from document_processor import DocumentProcessor, QuestionExtractor, AnswerGenerator
+except ImportError as e:
+    st.error(f"❌ Document processor import error: {e}")
+    st.error("Make sure document_processor.py is in the same directory")
+    st.stop()
 
 # Configure Streamlit page
 st.set_page_config(

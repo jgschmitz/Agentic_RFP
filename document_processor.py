@@ -9,10 +9,16 @@ for the Streamlit RAG frontend.
 
 import re
 import os
+import sys
 import logging
 from typing import List, Dict, Any, Optional, Tuple
 from pathlib import Path
 import tempfile
+
+# Add current directory to Python path for local imports
+current_dir = Path(__file__).parent
+if str(current_dir) not in sys.path:
+    sys.path.insert(0, str(current_dir))
 
 # Document processing imports
 try:
@@ -35,8 +41,22 @@ except ImportError:
     pytesseract = None
 
 # RFP Studio imports
-from rfp_studio.vector import embed_text, search_knowledge_base
-from rfp_studio.config import get_settings
+try:
+    from rfp_studio.vector import embed_text, search_knowledge_base
+    from rfp_studio.config import get_settings
+except ImportError as e:
+    print(f"Warning: Could not import RFP Studio modules: {e}")
+    print("Some functionality may be limited.")
+    
+    # Create fallback functions
+    def embed_text(text):
+        raise NotImplementedError("RFP Studio vector module not available")
+    
+    def search_knowledge_base(embedding, limit=5):
+        raise NotImplementedError("RFP Studio vector search not available")
+    
+    def get_settings():
+        raise NotImplementedError("RFP Studio config not available")
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
