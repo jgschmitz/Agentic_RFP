@@ -245,8 +245,6 @@ typer
 MONGODB_URI=mongodb+srv://...
 MONGODB_DB_NAME=rfp_studio
 OPENAI_API_KEY=sk-...
-ATLAS_VECTOR_INDEX_RFPS=rfp_vector_index
-ATLAS_VECTOR_INDEX_KB=kb_vector_index
 ```
 
 ---
