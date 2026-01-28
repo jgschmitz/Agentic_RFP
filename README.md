@@ -60,8 +60,7 @@ Visit **http://localhost:8501** to start processing documents!
 
 ## 🏗️ 3. Project Structure
 
-```
-mermaid
+```mermaid
 graph TD
     Root[rfp_studio/]
     
