@@ -61,35 +61,46 @@ Visit **http://localhost:8501** to start processing documents!
 ## 🏗️ 3. Project Structure
 
 ```
-rfp_studio/
-│
-├── agents/
-│   ├── base.py
-│   ├── sales.py
-│   ├── bdm.py
-│   ├── sme_router.py
-│
-├── orchestrator/
-│   └── langgraph_flow.py
-│
-├── vector/
-│   ├── embeddings.py
-│   └── atlas_query.py
-│
-├── knowledge/
-│   └── loader.py
-│
-├── models/
-│   ├── rfp.py
-│   └── task.py
-│
-├── workflow/
-│   └── states.py
-│
-├── db/
-│   └── atlas.py
-│
-└── config.py
+mermaid
+graph TD
+    Root[rfp_studio/]
+    
+    Root --> Agents[agents/]
+    Root --> Orchestrator[orchestrator/]
+    Root --> Vector[vector/]
+    Root --> Knowledge[knowledge/]
+    Root --> Models[models/]
+    Root --> Workflow[workflow/]
+    Root --> DB[db/]
+    Root --> Config[config.py]
+    
+    Agents --> AgentBase[base.py]
+    Agents --> AgentSales[sales.py]
+    Agents --> AgentBDM[bdm.py]
+    Agents --> AgentSME[sme_router.py]
+    
+    Orchestrator --> OrchestratorFlow[langgraph_flow.py]
+    
+    Vector --> VectorEmbed[embeddings.py]
+    Vector --> VectorAtlas[atlas_query.py]
+    
+    Knowledge --> KnowledgeLoader[loader.py]
+    
+    Models --> ModelsRFP[rfp.py]
+    Models --> ModelsTask[task.py]
+    
+    Workflow --> WorkflowStates[states.py]
+    
+    DB --> DBAtlas[atlas.py]
+    
+    style Root fill:#e1f5ff
+    style Agents fill:#fff4e1
+    style Orchestrator fill:#fff4e1
+    style Vector fill:#fff4e1
+    style Knowledge fill:#fff4e1
+    style Models fill:#fff4e1
+    style Workflow fill:#fff4e1
+    style DB fill:#fff4e1
 ```
 
 ---
