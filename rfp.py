@@ -1,5 +1,3 @@
-# rfp_studio/models/rfp.py
-
 """
 Pydantic models for RFP documents stored in MongoDB Atlas.
 
