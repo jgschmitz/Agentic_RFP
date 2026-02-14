@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-RFP Studio - Streamlit RAG Frontend
+RFP Studio Example Code Streamlit RAG Frontend
 
 Interactive web interface for document upload and Q&A processing.
 Extracts questions from uploaded documents and generates answers using RAG.
